@@ -11,7 +11,6 @@ TEST COMMAND
     /notify (type) (text) (duration)
 
 IF YOU WANT REMOVE COMMAND DELETE THINGS IN SERVER.CLIENT
-
 IF YOU WANT CHANGE THE MAIN TEXT - LOOK TO UI.HTML
             const config = {
             success: "SUCCESS", -- CHANGE "SUCCESS" TO WHAT YOU WANT
