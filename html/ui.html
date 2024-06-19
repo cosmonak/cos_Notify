@@ -1,1 +1,145 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification</title>
+    <style>
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.75);
+            padding: 20px 30px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+            display: none;
+            color: #FFFFFF;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.75), transparent);
+        }
+        .notification.show {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .notification.hide {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        .notification-header {
+            font-size: 20px;
+            text-shadow: 2px 2px 4px;
+            display: flex;
+            align-items: center;
+        }
+        .notification-body {
+            font-size: 15px;
+            color: #FFFFFF;
+            margin-top: 10px; /* Add margin to separate the main text and body text */
+        }
+        .notification-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        .success {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.75), #00ff008a);
+        }
+        .success .notification-header {
+            color: #00FF00;
+            text-shadow: 2px 2px 4px #00FF00;
+        }
+        .error {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.75), #ff000087);
+        }
+        .error .notification-header {
+            color: #FF0000;
+            text-shadow: 2px 2px 4px #FF0000;
+        }
+        .info {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.75), #00bbff7d);
+        }
+        .info .notification-header {
+            color: #00a6ff;
+            text-shadow: 2px 2px 4px #00FFFF;
+        }
+        .warning {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.75), #ffff0082);
+        }
+        .warning .notification-header {
+            color: #FFFF00;
+            text-shadow: 2px 2px 4px #FFFF00;
+        }
+    </style>
+</head>
+<body>
+    <body>
+        <div id="notification" class="notification">
+            <div class="notification-header">
+                <img src="" alt="icon" class="notification-icon">
+                <span id="notification-type">SUCCESS!!!</span>
+            </div>
+            <div class="notification-body">This is a message</div>
+        </div>
+        <audio id="notification-sound" src="notification-sound.mp3"></audio>
+        <script>
+            const config = {
+                success: "SUCCESS",
+                error: "ERROR",
+                info: "INFO",
+                warning: "WARNING"
+            };
+    
+            window.addEventListener('message', function(event) {
+                var data = event.data;
+                var notification = document.getElementById('notification');
+                var header = notification.querySelector('#notification-type');
+                var body = notification.querySelector('.notification-body');
+                var icon = notification.querySelector('.notification-icon');
+                var sound = document.getElementById('notification-sound');
+                
+                notification.className = 'notification ' + data.type;
+    
+                switch(data.type) {
+                    case 'success':
+                        header.innerHTML = config.success;
+                        icon.src = 'success-icon.png'; // Path to success icon
+                        break;
+                    case 'error':
+                        header.innerHTML = config.error;
+                        icon.src = 'error-icon.png'; // Path to error icon
+                        break;
+                    case 'info':
+                        header.innerHTML = config.info;
+                        icon.src = 'info-icon.png'; // Path to info icon
+                        break;
+                    case 'warning':
+                        header.innerHTML = config.warning;
+                        icon.src = 'warning-icon.png'; // Path to warning icon
+                        break;
+                    default:
+                        header.innerHTML = 'NOTIFICATION';
+                        icon.src = ''; // Default icon or none
+                        break;
+                }
+                
+                body.innerHTML = data.message;
+                notification.style.display = 'block';
+                sound.play();
+                
+                setTimeout(function() {
+                    notification.classList.add('show');
+                }, 1000);  // Small delay to trigger the transition effect
+                
+                setTimeout(function() {
+                    notification.classList.remove('show');
+                    notification.classList.add('hide');
+                    setTimeout(function() {
+                        notification.style.display = 'none';
+                        notification.classList.remove('hide');
+                    }, 1000); // Duration of the hiding transition
+                }, data.duration);
+            });
+        </script>
+    </body>
+    </html>
