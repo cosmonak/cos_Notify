@@ -1,3 +1,5 @@
+DISCORD: https://discord.gg/PD4dWVAxGR
+
 TYPES:
     SUCCESS
     ERROR
